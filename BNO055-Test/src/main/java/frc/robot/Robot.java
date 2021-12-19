@@ -19,7 +19,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-	private static BNO055 imu;
+  private static BNO055 imu;
+  private static int iterationCounter = 0;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -87,13 +88,25 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    System.out.println("System Status " + imu.getSystemStatus().toString());
-    System.out.println("Rev Info: " + imu.getRevInfo().toString());
-    System.out.println("GetHeading: " + imu.getHeading());
-    System.out.println("GetVector[0]: " + imu.getVector()[0]);
-    System.out.println("GetVector[1]: " + imu.getVector()[1]);
-    System.out.println("GetVector[2]: " + imu.getVector()[2]);
-    System.out.println("---------------------------------------");
+
+    if (iterationCounter++ % 50 == 0) {
+      System.out.println("Rev Info / Gyro Rev: " + imu.getRevInfo().gyro_rev);
+      System.out.println("Rev Info / SW Rev: " + imu.getRevInfo().sw_rev);
+      System.out.println("Subsystem Status / Self Test Result: " + imu.getSystemStatus().self_test_result);
+      System.out.println("Subsystem Status / System Error: " + imu.getSystemStatus().system_error);
+      System.out.println("Subsystem Status / System Status: " + imu.getSystemStatus().system_status);
+      System.out.println("Initialized " + imu.isInitialized());
+      System.out.println("Sensor Present " + imu.isSensorPresent());
+      System.out.println("Calibrated " + imu.isCalibrated());
+      System.out.println("Calibration.sys " + imu.getCalibration().sys);
+      System.out.println("Calibration.gyro " + imu.getCalibration().gyro);
+      System.out.println("Calibration.mag " + imu.getCalibration().mag);
+      System.out.println("GetHeading: " + imu.getHeading());
+      System.out.println("GetVector[0]: " + imu.getVector()[0]);
+      System.out.println("GetVector[1]: " + imu.getVector()[1]);
+      System.out.println("GetVector[2]: " + imu.getVector()[2]);
+      System.out.println("---------------------------------------");
+    }
   }
 
   /** This function is called once when the robot is disabled. */
